@@ -1,0 +1,20 @@
+{
+  "name": "contract-review-ai-mcp",
+  "description": "MEOK AI Labs \u2014 Contract Review tools for AI agents and LLMs",
+  "vendor": "MEOK AI Labs",
+  "homepage": "https://meok.ai",
+  "repository": "https://github.com/CSOAI-ORG/contract-review-ai-mcp",
+  "runtime": "python",
+  "entrypoint": "server.py",
+  "tools": [
+    "extract_clauses"
+  ],
+  "categories": [
+    "Legal",
+    "Document Analysis"
+  ],
+  "pricing": {
+    "free": "50 calls/day",
+    "pro": "$9/mo"
+  }
+}
