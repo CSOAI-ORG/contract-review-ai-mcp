@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "contract-review-ai-mcp"
+version = "0.1.0"
+description = "Extract clauses, risks, and terms from contracts."
+authors = [{name="MEOK AI Labs", email="nicholas@meok.ai"}]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://meok.ai"
+Repository = "https://github.com/CSOAI-ORG/contract-review-ai-mcp"
