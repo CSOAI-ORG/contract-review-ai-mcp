@@ -12,8 +12,7 @@ from mcp.server.stdio import stdio_server
 from mcp.types import (
     Resource,
     Tool,
-    TextContent,
-)
+    TextContent)
 import mcp.types as types
 
 # In-memory store (replace with DB in production)
@@ -52,10 +51,7 @@ async def main():
                 server_version="0.1.0",
                 capabilities=server.get_capabilities(
                     notification_options=NotificationOptions(),
-                    experimental_capabilities={},
-                ),
-            ),
-        )
+                    experimental_capabilities={})))
 
 if __name__ == "__main__":
     asyncio.run(main())
