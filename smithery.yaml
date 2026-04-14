@@ -1,10 +1,5 @@
 name: contract-review-ai-mcp
-description: "MEOK AI Labs — Contract Review tools for AI agents and LLMs"
-vendor: MEOK AI Labs
-homepage: https://meok.ai
-repository: https://github.com/CSOAI-ORG/contract-review-ai-mcp
-license: MIT
-categories: [Legal, Document Analysis]
-tags: [contract-review, legal-analysis, contract-management, legal-tech]
-runtime: python
-entrypoint: server.py
+description: "Contract Review Ai Mcp \u2014 Extract clauses, risks, and terms from\
+  \ contracts."
+version: 1.0.0
+tools: []
