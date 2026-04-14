@@ -14,6 +14,10 @@ from mcp.types import (
     Tool,
     TextContent)
 import mcp.types as types
+import sys, os
+sys.path.insert(0, os.path.expanduser("~/clawd/meok-labs-engine/shared"))
+from auth_middleware import check_access
+import json
 
 # In-memory store (replace with DB in production)
 _store = {}
