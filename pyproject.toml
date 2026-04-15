@@ -22,3 +22,6 @@ Repository = "https://github.com/CSOAI-ORG/contract-review-ai-mcp"
 [tool.hatch.build.targets.wheel]
 packages = ["."]
 only-include = ["server.py"]
+
+[project.scripts]
+contract_review_ai_mcp = "server:main"
