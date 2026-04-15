@@ -1,21 +1,16 @@
 #!/usr/bin/env python3
 """MEOK AI Labs — contract-review-ai-mcp MCP Server. Contract analysis, clause extraction, and risk assessment."""
 
-import asyncio
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 import uuid
 import sys, os
 
 sys.path.insert(0, os.path.expanduser("~/clawd/meok-labs-engine/shared"))
 from auth_middleware import check_access
-from mcp.server.models import InitializationOptions
-from mcp.server import NotificationOptions, Server
-from mcp.server.stdio import stdio_server
-from mcp.types import Resource, Tool, TextContent
-import mcp.types as types
+from mcp.server.fastmcp import FastMCP
 from collections import defaultdict
 
 FREE_DAILY_LIMIT = 15
@@ -28,7 +23,7 @@ def _rl(c="anon"):
 
 
 _store = {"contracts": [], "reviews": []}
-server = Server("contract-review-ai")
+mcp = FastMCP("contract-review-ai", instructions="Contract analysis, clause extraction, and risk assessment.")
 
 
 def create_id():
@@ -55,97 +50,12 @@ RISK_KEYWORDS = {
 }
 
 
-@server.list_resources()
-async def handle_list_resources():
-    return [
-        Resource(
-            uri="contract::reviews",
-            name="Contract Reviews",
-            mimeType="application/json",
-        ),
-        Resource(
-            uri="contract::contracts",
-            name="Stored Contracts",
-            mimeType="application/json",
-        ),
-    ]
-
-
-@server.list_tools()
-async def handle_list_tools():
-    return [
-        Tool(
-            name="analyze_contract",
-            description="Analyze contract text for clauses and risks",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "contract_text": {"type": "string"},
-                    "contract_type": {"type": "string"},
-                    "api_key": {"type": "string"},
-                },
-            },
-        ),
-        Tool(
-            name="extract_clauses",
-            description="Extract specific clauses from contract",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "contract_text": {"type": "string"},
-                    "clause_types": {"type": "array"},
-                },
-            },
-        ),
-        Tool(
-            name="identify_risks",
-            description="Identify potential risks in contract",
-            inputSchema={
-                "type": "object",
-                "properties": {"contract_text": {"type": "string"}},
-            },
-        ),
-        Tool(
-            name="compare_contracts",
-            description="Compare two contracts",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "contract1_id": {"type": "string"},
-                    "contract2_id": {"type": "string"},
-                },
-            },
-        ),
-        Tool(
-            name="summarize_contract",
-            description="Generate contract summary",
-            inputSchema={
-                "type": "object",
-                "properties": {"contract_text": {"type": "string"}},
-            },
-        ),
-        Tool(
-            name="check_favourable_terms",
-            description="Check for favourable terms",
-            inputSchema={
-                "type": "object",
-                "properties": {"contract_text": {"type": "string"}},
-            },
-        ),
-        Tool(
-            name="get_review_history",
-            description="Get review history",
-            inputSchema={"type": "object", "properties": {"limit": {"type": "number"}}},
-        ),
-    ]
-
-
-def extract_clauses(text: str, clause_types: list = None) -> dict:
+def extract_clauses_fn(text: str, clause_types: list = None) -> dict:
     results = {}
     text_lower = text.lower()
-    types = clause_types or list(CLAUSE_PATTERNS.keys())
+    types_list = clause_types or list(CLAUSE_PATTERNS.keys())
 
-    for clause_type in types:
+    for clause_type in types_list:
         pattern = CLAUSE_PATTERNS.get(clause_type, "")
         if pattern:
             matches = re.findall(pattern, text_lower, re.IGNORECASE)
@@ -190,185 +100,157 @@ def assess_risks(text: str) -> dict:
     }
 
 
-@server.call_tool()
-async def handle_call_tool(name: str, arguments: Any = None) -> list[types.TextContent]:
-    args = arguments or {}
-    api_key = args.get("api_key", "")
+@mcp.tool()
+def analyze_contract(contract_text: str, contract_type: str = "general", api_key: str = "") -> str:
+    """Analyze contract text for clauses and risks"""
     allowed, msg, tier = check_access(api_key)
     if not allowed:
-        return [
-            TextContent(
-                type="text",
-                text=json.dumps(
-                    {"error": msg, "upgrade_url": "https://meok.ai/pricing"}
-                ),
-            )
-        ]
+        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+    if err := _rl(): return err
 
-    if name == "analyze_contract":
-        text = args.get("contract_text", "")
-        contract_type = args.get("contract_type", "general")
+    clauses = extract_clauses_fn(contract_text)
+    risks = assess_risks(contract_text)
+    word_count = len(contract_text.split())
 
-        clauses = extract_clauses(text)
-        risks = assess_risks(text)
-        word_count = len(text.split())
+    review = {
+        "id": create_id(),
+        "contract_type": contract_type,
+        "clauses": clauses,
+        "risks": risks,
+        "word_count": word_count,
+        "reviewed_at": datetime.now().isoformat(),
+    }
+    _store["reviews"].append(review)
 
-        review = {
-            "id": create_id(),
+    return json.dumps(
+        {
+            "review_id": review["id"],
             "contract_type": contract_type,
-            "clauses": clauses,
-            "risks": risks,
             "word_count": word_count,
-            "reviewed_at": datetime.now().isoformat(),
-        }
-        _store["reviews"].append(review)
-
-        return [
-            TextContent(
-                type="text",
-                text=json.dumps(
-                    {
-                        "review_id": review["id"],
-                        "contract_type": contract_type,
-                        "word_count": word_count,
-                        "risk_assessment": risks["overall_risk"],
-                        "clauses_found": sum(
-                            1 for c in clauses.values() if c.get("found")
-                        ),
-                    },
-                    indent=2,
-                ),
-            )
-        ]
-
-    elif name == "extract_clauses":
-        text = args.get("contract_text", "")
-        types = args.get("clause_types", list(CLAUSE_PATTERNS.keys()))
-
-        results = extract_clauses(text, types)
-
-        return [
-            TextContent(
-                type="text",
-                text=json.dumps(
-                    {
-                        "extracted": results,
-                        "found_count": sum(
-                            1 for v in results.values() if v.get("found")
-                        ),
-                    },
-                    indent=2,
-                ),
-            )
-        ]
-
-    elif name == "identify_risks":
-        text = args.get("contract_text", "")
-
-        risks = assess_risks(text)
-
-        return [TextContent(type="text", text=json.dumps(risks, indent=2))]
-
-    elif name == "compare_contracts":
-        id1 = args.get("contract1_id")
-        id2 = args.get("contract2_id")
-
-        c1 = next((r for r in _store["reviews"] if r["id"] == id1), None)
-        c2 = next((r for r in _store["reviews"] if r["id"] == id2), None)
-
-        if not c1 or not c2:
-            return [
-                TextContent(
-                    type="text", text=json.dumps({"error": "Contract not found"})
-                )
-            ]
-
-        comparison = {
-            "contract1_risk": c1["risks"]["overall_risk"],
-            "contract2_risk": c2["risks"]["overall_risk"],
-            "difference": "contract1_lower"
-            if c1["risks"]["overall_risk"] < c2["risks"]["overall_risk"]
-            else "same_or_higher",
-        }
-
-        return [TextContent(type="text", text=json.dumps(comparison, indent=2))]
-
-    elif name == "summarize_contract":
-        text = args.get("contract_text", "")
-
-        clauses = extract_clauses(text)
-        risks = assess_risks(text)
-
-        summary = {
-            "total_words": len(text.split()),
-            "clauses_detected": sum(1 for c in clauses.values() if c.get("found")),
-            "risk_level": risks["overall_risk"],
-            "key_clauses": [c for c, v in clauses.items() if v.get("found")],
-        }
-
-        return [TextContent(type="text", text=json.dumps(summary, indent=2))]
-
-    elif name == "check_favourable_terms":
-        text = args.get("contract_text", "")
-        text_lower = text.lower()
-
-        favourable = []
-        favourable_keywords = [
-            "mutual",
-            "reasonable",
-            "cap",
-            "reasonable",
-            "negotiable",
-            "flexible",
-            "customary",
-        ]
-
-        for kw in favourable_keywords:
-            if kw in text_lower:
-                favourable.append(kw)
-
-        return [
-            TextContent(
-                type="text",
-                text=json.dumps(
-                    {"favourable_terms": favourable, "count": len(favourable)}
-                ),
-            )
-        ]
-
-    elif name == "get_review_history":
-        limit = args.get("limit", 10)
-
-        history = _store["reviews"][-limit:]
-
-        return [
-            TextContent(
-                type="text",
-                text=json.dumps({"reviews": history, "count": len(history)}, indent=2),
-            )
-        ]
-
-    return [TextContent(type="text", text=json.dumps({"error": "Unknown tool"}))]
+            "risk_assessment": risks["overall_risk"],
+            "clauses_found": sum(1 for c in clauses.values() if c.get("found")),
+        },
+        indent=2,
+    )
 
 
-async def main():
-    async with stdio_server(server._read_stream, server._write_stream) as (
-        read_stream,
-        write_stream,
-    ):
-        await server.run(
-            read_stream,
-            write_stream,
-            InitializationOptions(
-                server_name="contract-review-ai",
-                server_version="0.1.0",
-                capabilities=server.get_capabilities(
-                    notification_options=NotificationOptions(),
-                    experimental_capabilities={},
-                ),
-            ),
-        )
+@mcp.tool()
+def extract_clauses(contract_text: str, clause_types: list = None, api_key: str = "") -> str:
+    """Extract specific clauses from contract"""
+    allowed, msg, tier = check_access(api_key)
+    if not allowed:
+        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+    if err := _rl(): return err
+
+    types_list = clause_types or list(CLAUSE_PATTERNS.keys())
+    results = extract_clauses_fn(contract_text, types_list)
+
+    return json.dumps(
+        {
+            "extracted": results,
+            "found_count": sum(1 for v in results.values() if v.get("found")),
+        },
+        indent=2,
+    )
+
+
+@mcp.tool()
+def identify_risks(contract_text: str, api_key: str = "") -> str:
+    """Identify potential risks in contract"""
+    allowed, msg, tier = check_access(api_key)
+    if not allowed:
+        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+    if err := _rl(): return err
+
+    risks = assess_risks(contract_text)
+    return json.dumps(risks, indent=2)
+
+
+@mcp.tool()
+def compare_contracts(contract1_id: str, contract2_id: str, api_key: str = "") -> str:
+    """Compare two contracts"""
+    allowed, msg, tier = check_access(api_key)
+    if not allowed:
+        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+    if err := _rl(): return err
+
+    c1 = next((r for r in _store["reviews"] if r["id"] == contract1_id), None)
+    c2 = next((r for r in _store["reviews"] if r["id"] == contract2_id), None)
+
+    if not c1 or not c2:
+        return json.dumps({"error": "Contract not found"})
+
+    comparison = {
+        "contract1_risk": c1["risks"]["overall_risk"],
+        "contract2_risk": c2["risks"]["overall_risk"],
+        "difference": "contract1_lower"
+        if c1["risks"]["overall_risk"] < c2["risks"]["overall_risk"]
+        else "same_or_higher",
+    }
+
+    return json.dumps(comparison, indent=2)
+
+
+@mcp.tool()
+def summarize_contract(contract_text: str, api_key: str = "") -> str:
+    """Generate contract summary"""
+    allowed, msg, tier = check_access(api_key)
+    if not allowed:
+        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+    if err := _rl(): return err
+
+    clauses = extract_clauses_fn(contract_text)
+    risks = assess_risks(contract_text)
+
+    summary = {
+        "total_words": len(contract_text.split()),
+        "clauses_detected": sum(1 for c in clauses.values() if c.get("found")),
+        "risk_level": risks["overall_risk"],
+        "key_clauses": [c for c, v in clauses.items() if v.get("found")],
+    }
+
+    return json.dumps(summary, indent=2)
+
+
+@mcp.tool()
+def check_favourable_terms(contract_text: str, api_key: str = "") -> str:
+    """Check for favourable terms"""
+    allowed, msg, tier = check_access(api_key)
+    if not allowed:
+        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+    if err := _rl(): return err
+
+    text_lower = contract_text.lower()
+
+    favourable = []
+    favourable_keywords = [
+        "mutual",
+        "reasonable",
+        "cap",
+        "reasonable",
+        "negotiable",
+        "flexible",
+        "customary",
+    ]
+
+    for kw in favourable_keywords:
+        if kw in text_lower:
+            favourable.append(kw)
+
+    return json.dumps({"favourable_terms": favourable, "count": len(favourable)})
+
+
+@mcp.tool()
+def get_review_history(limit: int = 10, api_key: str = "") -> str:
+    """Get review history"""
+    allowed, msg, tier = check_access(api_key)
+    if not allowed:
+        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+    if err := _rl(): return err
+
+    history = _store["reviews"][-limit:]
+    return json.dumps({"reviews": history, "count": len(history)}, indent=2)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    mcp.run()

@@ -1,6 +1,6 @@
 {
   "name": "contract-review-ai-mcp",
-  "description": "> **By [MEOK AI Labs](https://meok.ai)** \u2014 MEOK AI Labs MCP Server",
+  "description": "> **By [MEOK AI Labs](https://meok.ai)** \u2014 Contract analysis, clause extraction, and risk assessment.",
   "version": "1.0.0",
   "tools": [
     {
@@ -8,8 +8,17 @@
       "description": "Analyze contract text for clauses and risks",
       "parameters": {
         "type": "object",
-        "properties": {},
-        "required": []
+        "properties": {
+          "contract_text": {
+            "type": "string"
+          },
+          "contract_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "contract_text"
+        ]
       }
     },
     {
@@ -17,8 +26,17 @@
       "description": "Extract specific clauses from contract",
       "parameters": {
         "type": "object",
-        "properties": {},
-        "required": []
+        "properties": {
+          "contract_text": {
+            "type": "string"
+          },
+          "clause_types": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "contract_text"
+        ]
       }
     },
     {
@@ -26,8 +44,14 @@
       "description": "Identify potential risks in contract",
       "parameters": {
         "type": "object",
-        "properties": {},
-        "required": []
+        "properties": {
+          "contract_text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "contract_text"
+        ]
       }
     },
     {
@@ -35,8 +59,18 @@
       "description": "Compare two contracts",
       "parameters": {
         "type": "object",
-        "properties": {},
-        "required": []
+        "properties": {
+          "contract1_id": {
+            "type": "string"
+          },
+          "contract2_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "contract1_id",
+          "contract2_id"
+        ]
       }
     },
     {
@@ -44,8 +78,14 @@
       "description": "Generate contract summary",
       "parameters": {
         "type": "object",
-        "properties": {},
-        "required": []
+        "properties": {
+          "contract_text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "contract_text"
+        ]
       }
     },
     {
@@ -53,8 +93,14 @@
       "description": "Check for favourable terms",
       "parameters": {
         "type": "object",
-        "properties": {},
-        "required": []
+        "properties": {
+          "contract_text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "contract_text"
+        ]
       }
     },
     {
@@ -62,7 +108,11 @@
       "description": "Get review history",
       "parameters": {
         "type": "object",
-        "properties": {},
+        "properties": {
+          "limit": {
+            "type": "integer"
+          }
+        },
         "required": []
       }
     }
