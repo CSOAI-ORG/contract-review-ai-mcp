@@ -1,4 +1,25 @@
 name: contract-review-ai-mcp
 description: MEOK AI Labs MCP Server
 version: 1.0.0
-tools: []
+tools:
+- name: analyze_contract
+  description: Analyze contract text for clauses and risks
+  parameters: []
+- name: extract_clauses
+  description: Extract specific clauses from contract
+  parameters: []
+- name: identify_risks
+  description: Identify potential risks in contract
+  parameters: []
+- name: compare_contracts
+  description: Compare two contracts
+  parameters: []
+- name: summarize_contract
+  description: Generate contract summary
+  parameters: []
+- name: check_favourable_terms
+  description: Check for favourable terms
+  parameters: []
+- name: get_review_history
+  description: Get review history
+  parameters: []

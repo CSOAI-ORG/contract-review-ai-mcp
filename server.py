@@ -16,9 +16,19 @@ from mcp.server import NotificationOptions, Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Resource, Tool, TextContent
 import mcp.types as types
+from collections import defaultdict
+
+FREE_DAILY_LIMIT = 15
+_usage = defaultdict(list)
+def _rl(c="anon"):
+    now = datetime.now(timezone.utc)
+    _usage[c] = [t for t in _usage[c] if (now-t).total_seconds() < 86400]
+    if len(_usage[c]) >= FREE_DAILY_LIMIT: return json.dumps({"error": f"Limit {FREE_DAILY_LIMIT}/day"})
+    _usage[c].append(now); return None
+
 
 _store = {"contracts": [], "reviews": []}
-server = Server("contract-review-ai-mcp")
+server = Server("contract-review-ai")
 
 
 def create_id():
@@ -350,7 +360,7 @@ async def main():
             read_stream,
             write_stream,
             InitializationOptions(
-                server_name="contract-review-ai-mcp",
+                server_name="contract-review-ai",
                 server_version="0.1.0",
                 capabilities=server.get_capabilities(
                     notification_options=NotificationOptions(),
