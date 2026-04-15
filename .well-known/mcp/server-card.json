@@ -1,0 +1,65 @@
+{
+  "name": "contract-review-ai",
+  "description": "Contract analysis, clause extraction, and risk assessment.",
+  "version": "1.0.0",
+  "protocol_version": "2025-11-25",
+  "publisher": {
+    "name": "MEOK AI Labs",
+    "url": "https://meok.ai",
+    "email": "nicholas@meok.ai"
+  },
+  "repository": "https://github.com/CSOAI-ORG/contract-review-ai-mcp",
+  "license": "MIT",
+  "transport": [
+    "stdio",
+    "streamable-http"
+  ],
+  "authentication": {
+    "type": "api-key",
+    "free_tier": true,
+    "free_limit": "15 calls/day"
+  },
+  "tools": [
+    {
+      "name": "analyze_contract",
+      "description": "Analyze contract text for clauses and risks"
+    },
+    {
+      "name": "extract_clauses",
+      "description": "Extract specific clauses from contract"
+    },
+    {
+      "name": "identify_risks",
+      "description": "Identify potential risks in contract"
+    },
+    {
+      "name": "compare_contracts",
+      "description": "Compare two contracts"
+    },
+    {
+      "name": "summarize_contract",
+      "description": "Generate contract summary"
+    },
+    {
+      "name": "check_favourable_terms",
+      "description": "Check for favourable terms"
+    },
+    {
+      "name": "get_review_history",
+      "description": "Get review history"
+    }
+  ],
+  "categories": [
+    "AI & Machine Learning",
+    "Legal & Regulatory"
+  ],
+  "pricing": {
+    "free": {
+      "calls_per_day": 15
+    },
+    "pro": {
+      "price": "$29/month",
+      "url": "https://meok.ai/pricing"
+    }
+  }
+}
