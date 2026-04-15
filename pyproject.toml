@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 [project]
 name = "contract-review-ai-mcp"
 version = "1.0.0"
-description = "MEOK AI Labs — contract-review-ai-mcp"
+description = "MCP server for contract review ai. Features analyze contract, extract clauses, identify risks. From MEOK AI Labs."
 license = {file = "LICENSE"}
 requires-python = ">=3.10"
 authors = [{name = "MEOK AI Labs", email = "nicholas@meok.ai"}]
