@@ -1,70 +1,38 @@
-# Contract Review AI MCP Server
+<div align="center">
 
-> By [MEOK AI Labs](https://meok.ai) — Contract analysis, clause extraction, and risk assessment
+[![GitHub stars](https://img.shields.io/github/stars/CSOAI-ORG/contract-review-ai-mcp)](https://github.com/CSOAI-ORG/contract-review-ai-mcp/stargazers)
+
+# ucontractU reviewU aiU mcp
+
+****
+
+[![npm version](https://img.shields.io/npm/v/@meok-ai/contract-review-ai-mcp)](https://www.npmjs.com/package/@meok-ai/contract-review-ai-mcp)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![MEOK AI Labs](https://img.shields.io/badge/MEOK_AI_Labs-255+_servers-purple)](https://meok.ai)
+
+[Installation](#installation) · [Docs](https://csoai.org) · [Report Bug](https://github.com/CSOAI-ORG/contract-review-ai-mcp/issues)
+
+</div>
+
+---
 
 ## Installation
 
 ```bash
 pip install contract-review-ai-mcp
+# or
+npm install -g @meok-ai/contract-review-ai-mcp
 ```
 
-## Usage
+## Quick Start
 
-```bash
-python server.py
-```
+See the project repository for full documentation and examples.
 
-## Tools
+## Enterprise Support
 
-### `analyze_contract`
-Analyze contract text for clauses and risks. Detects confidentiality, indemnification, liability limits, termination, force majeure, and more.
-
-**Parameters:**
-- `contract_text` (str): Contract text
-- `contract_type` (str): Contract type (default 'general')
-
-### `extract_clauses`
-Extract specific clause types from a contract.
-
-**Parameters:**
-- `contract_text` (str): Contract text
-- `clause_types` (list): Clause types to extract
-
-### `identify_risks`
-Identify potential risks (high, medium, low) in contract text.
-
-**Parameters:**
-- `contract_text` (str): Contract text
-
-### `compare_contracts`
-Compare two previously analyzed contracts.
-
-**Parameters:**
-- `contract1_id` (str): First contract review ID
-- `contract2_id` (str): Second contract review ID
-
-### `summarize_contract`
-Generate contract summary with key clauses and risk level.
-
-**Parameters:**
-- `contract_text` (str): Contract text
-
-### `check_favourable_terms`
-Check for favourable terms (mutual, reasonable, negotiable, etc.).
-
-**Parameters:**
-- `contract_text` (str): Contract text
-
-### `get_review_history`
-Get review history.
-
-**Parameters:**
-- `limit` (int): Max results (default 10)
-
-## Authentication
-
-Free tier: 15 calls/day. Upgrade at [meok.ai/pricing](https://meok.ai/pricing) for unlimited access.
+- 📧 nicholas@csoai.org
+- 🌐 [CSOAI.org](https://csoai.org)
 
 ## License
 
-MIT — MEOK AI Labs
+MIT © [CSOAI](https://csoai.org)
