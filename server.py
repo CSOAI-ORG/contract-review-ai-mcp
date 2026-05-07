@@ -118,6 +118,12 @@ def analyze_contract(contract_text: str, contract_type: str = "general", api_key
     When NOT to use:
         Not suitable for real-time production decision-making without
         human review of results.
+
+    Args:
+        contract_text (str): The contract text to analyze or process.
+        contract_type (str): The contract type to analyze or process.
+        api_key (str): The api key to analyze or process.
+
     Behavioral Transparency:
         - Side Effects: This tool is read-only and produces no side effects. It does not modify
           any external state, databases, or files. All output is computed in-memory and returned
@@ -182,6 +188,12 @@ def extract_clauses(contract_text: str, clause_types: list = None, api_key: str 
     When NOT to use:
         Not suitable for real-time production decision-making without
         human review of results.
+
+    Args:
+        contract_text (str): The contract text to analyze or process.
+        clause_types (list): The clause types to analyze or process.
+        api_key (str): The api key to analyze or process.
+
     Behavioral Transparency:
         - Side Effects: This tool is read-only and produces no side effects. It does not modify
           any external state, databases, or files. All output is computed in-memory and returned
@@ -232,6 +244,11 @@ def identify_risks(contract_text: str, api_key: str = "") -> str:
     When NOT to use:
         Not suitable for real-time production decision-making without
         human review of results.
+
+    Args:
+        contract_text (str): The contract text to analyze or process.
+        api_key (str): The api key to analyze or process.
+
     Behavioral Transparency:
         - Side Effects: This tool is read-only and produces no side effects. It does not modify
           any external state, databases, or files. All output is computed in-memory and returned
@@ -274,6 +291,12 @@ def compare_contracts(contract1_id: str, contract2_id: str, api_key: str = "") -
     When NOT to use:
         Not suitable for real-time production decision-making without
         human review of results.
+
+    Args:
+        contract1_id (str): The contract1 id to analyze or process.
+        contract2_id (str): The contract2 id to analyze or process.
+        api_key (str): The api key to analyze or process.
+
     Behavioral Transparency:
         - Side Effects: This tool is read-only and produces no side effects. It does not modify
           any external state, databases, or files. All output is computed in-memory and returned
@@ -328,6 +351,11 @@ def summarize_contract(contract_text: str, api_key: str = "") -> str:
     When NOT to use:
         Not suitable for real-time production decision-making without
         human review of results.
+
+    Args:
+        contract_text (str): The contract text to analyze or process.
+        api_key (str): The api key to analyze or process.
+
     Behavioral Transparency:
         - Side Effects: This tool is read-only and produces no side effects. It does not modify
           any external state, databases, or files. All output is computed in-memory and returned
@@ -379,6 +407,11 @@ def check_favourable_terms(contract_text: str, api_key: str = "") -> str:
     When NOT to use:
         Not suitable for real-time production decision-making without
         human review of results.
+
+    Args:
+        contract_text (str): The contract text to analyze or process.
+        api_key (str): The api key to analyze or process.
+
     Behavioral Transparency:
         - Side Effects: This tool is read-only and produces no side effects. It does not modify
           any external state, databases, or files. All output is computed in-memory and returned
@@ -437,6 +470,11 @@ def get_review_history(limit: int = 10, api_key: str = "") -> str:
     When NOT to use:
         Not suitable for real-time production decision-making without
         human review of results.
+
+    Args:
+        limit (int): The limit to analyze or process.
+        api_key (str): The api key to analyze or process.
+
     Behavioral Transparency:
         - Side Effects: This tool is read-only and produces no side effects. It does not modify
           any external state, databases, or files. All output is computed in-memory and returned
