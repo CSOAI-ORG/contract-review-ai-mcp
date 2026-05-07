@@ -1,3 +1,5 @@
+[![contract-review-ai-mcp MCP server](https://glama.ai/mcp/servers/CSOAI-ORG/contract-review-ai-mcp/badges/card.svg)](https://glama.ai/mcp/servers/CSOAI-ORG/contract-review-ai-mcp)
+
 <div align="center">
 
 [![GitHub stars](https://img.shields.io/github/stars/CSOAI-ORG/contract-review-ai-mcp)](https://github.com/CSOAI-ORG/contract-review-ai-mcp/stargazers)
