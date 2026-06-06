@@ -1,0 +1,34 @@
+# Contract Review Ai MCP
+
+> Contract analysis, clause extraction, and risk assessment
+
+`contract-review-ai-mcp` is a Model Context Protocol (MCP) server by MEOK AI Labs.
+
+## Install
+
+```bash
+pip install contract-review-ai-mcp
+```
+
+Or run without installing:
+
+```bash
+uvx contract-review-ai-mcp
+```
+
+## Tools
+
+- `analyze_contract` — Analyze contract text for clauses and risks
+- `extract_clauses` — Extract specific clauses from contract
+- `identify_risks` — Identify potential risks in contract
+- `compare_contracts` — Compare two contracts
+- `summarize_contract` — Generate contract summary
+- `check_favourable_terms` — Check for favourable terms
+- `get_review_history` — Get review history
+
+## Links
+
+- Source: https://github.com/CSOAI-ORG/contract-review-ai-mcp
+- PyPI: https://pypi.org/project/contract-review-ai-mcp/
+- MEOK AI Labs: https://meok.ai
+- Council of AI: https://councilof.ai
