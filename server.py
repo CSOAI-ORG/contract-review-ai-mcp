@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""MEOK AI Labs — contract-review-ai-mcp MCP Server. Contract analysis, clause extraction, and risk assessment."""
+"""
+Buy Pro: https://www.csoai.org/checkout
+MEOK AI Labs — contract-review-ai-mcp MCP Server. Contract analysis, clause extraction, and risk assessment."""
 
 import json
 import re
@@ -8,7 +10,6 @@ from typing import Any
 import uuid
 import sys, os
 
-sys.path.insert(0, os.path.expanduser("~/clawd/meok-labs-engine/shared"))
 from auth_middleware import check_access
 from mcp.server.fastmcp import FastMCP
 from collections import defaultdict
@@ -141,7 +142,7 @@ def analyze_contract(contract_text: str, contract_type: str = "general", api_key
     """
     allowed, msg, tier = check_access(api_key)
     if not allowed:
-        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+        return json.dumps({"error": msg, "upgrade_url": "https://councilof.ai"})
     if err := _rl(): return err
 
     clauses = extract_clauses_fn(contract_text)
@@ -211,7 +212,7 @@ def extract_clauses(contract_text: str, clause_types: list = None, api_key: str 
     """
     allowed, msg, tier = check_access(api_key)
     if not allowed:
-        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+        return json.dumps({"error": msg, "upgrade_url": "https://councilof.ai"})
     if err := _rl(): return err
 
     types_list = clause_types or list(CLAUSE_PATTERNS.keys())
@@ -266,7 +267,7 @@ def identify_risks(contract_text: str, api_key: str = "") -> str:
     """
     allowed, msg, tier = check_access(api_key)
     if not allowed:
-        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+        return json.dumps({"error": msg, "upgrade_url": "https://councilof.ai"})
     if err := _rl(): return err
 
     risks = assess_risks(contract_text)
@@ -314,7 +315,7 @@ def compare_contracts(contract1_id: str, contract2_id: str, api_key: str = "") -
     """
     allowed, msg, tier = check_access(api_key)
     if not allowed:
-        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+        return json.dumps({"error": msg, "upgrade_url": "https://councilof.ai"})
     if err := _rl(): return err
 
     c1 = next((r for r in _store["reviews"] if r["id"] == contract1_id), None)
@@ -373,7 +374,7 @@ def summarize_contract(contract_text: str, api_key: str = "") -> str:
     """
     allowed, msg, tier = check_access(api_key)
     if not allowed:
-        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+        return json.dumps({"error": msg, "upgrade_url": "https://councilof.ai"})
     if err := _rl(): return err
 
     clauses = extract_clauses_fn(contract_text)
@@ -429,7 +430,7 @@ def check_favourable_terms(contract_text: str, api_key: str = "") -> str:
     """
     allowed, msg, tier = check_access(api_key)
     if not allowed:
-        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+        return json.dumps({"error": msg, "upgrade_url": "https://councilof.ai"})
     if err := _rl(): return err
 
     text_lower = contract_text.lower()
@@ -492,12 +493,15 @@ def get_review_history(limit: int = 10, api_key: str = "") -> str:
     """
     allowed, msg, tier = check_access(api_key)
     if not allowed:
-        return json.dumps({"error": msg, "upgrade_url": "https://meok.ai/pricing"})
+        return json.dumps({"error": msg, "upgrade_url": "https://councilof.ai"})
     if err := _rl(): return err
 
     history = _store["reviews"][-limit:]
     return json.dumps({"reviews": history, "count": len(history)}, indent=2)
 
 
-if __name__ == "__main__":
+def main():
     mcp.run()
+
+if __name__ == '__main__':
+    main()
