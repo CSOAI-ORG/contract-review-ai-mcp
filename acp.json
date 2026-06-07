@@ -1,0 +1,25 @@
+{
+  "acpVersion": "0.1",
+  "agent": {
+    "name": "contract-review-ai-mcp",
+    "description": "Contract Review Ai MCP Server by MEOK AI Labs",
+    "version": "1.0.6",
+    "provider": "MEOK AI Labs",
+    "interfaces": [
+      {
+        "type": "mcp",
+        "transport": "stdio",
+        "package": "contract-review-ai-mcp"
+      }
+    ],
+    "capabilities": [
+      "analyze_contract",
+      "extract_clauses",
+      "identify_risks",
+      "compare_contracts",
+      "summarize_contract",
+      "check_favourable_terms",
+      "get_review_history"
+    ]
+  }
+}

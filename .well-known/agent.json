@@ -1,0 +1,86 @@
+{
+  "name": "contract-review-ai-mcp",
+  "description": "Contract Review Ai MCP Server by MEOK AI Labs",
+  "url": "https://proofof.ai/scorecard/contract-review-ai-mcp.html",
+  "version": "1.0.6",
+  "protocolVersion": "0.2.0",
+  "provider": {
+    "organization": "MEOK AI Labs",
+    "url": "https://meok.ai"
+  },
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "defaultInputModes": [
+    "text"
+  ],
+  "defaultOutputModes": [
+    "text"
+  ],
+  "skills": [
+    {
+      "id": "analyze_contract",
+      "name": "Analyze Contract",
+      "description": "analyze_contract via contract-review-ai-mcp",
+      "tags": [
+        "mcp",
+        "compliance"
+      ]
+    },
+    {
+      "id": "extract_clauses",
+      "name": "Extract Clauses",
+      "description": "extract_clauses via contract-review-ai-mcp",
+      "tags": [
+        "mcp",
+        "compliance"
+      ]
+    },
+    {
+      "id": "identify_risks",
+      "name": "Identify Risks",
+      "description": "identify_risks via contract-review-ai-mcp",
+      "tags": [
+        "mcp",
+        "compliance"
+      ]
+    },
+    {
+      "id": "compare_contracts",
+      "name": "Compare Contracts",
+      "description": "compare_contracts via contract-review-ai-mcp",
+      "tags": [
+        "mcp",
+        "compliance"
+      ]
+    },
+    {
+      "id": "summarize_contract",
+      "name": "Summarize Contract",
+      "description": "summarize_contract via contract-review-ai-mcp",
+      "tags": [
+        "mcp",
+        "compliance"
+      ]
+    },
+    {
+      "id": "check_favourable_terms",
+      "name": "Check Favourable Terms",
+      "description": "check_favourable_terms via contract-review-ai-mcp",
+      "tags": [
+        "mcp",
+        "compliance"
+      ]
+    },
+    {
+      "id": "get_review_history",
+      "name": "Get Review History",
+      "description": "get_review_history via contract-review-ai-mcp",
+      "tags": [
+        "mcp",
+        "compliance"
+      ]
+    }
+  ]
+}
