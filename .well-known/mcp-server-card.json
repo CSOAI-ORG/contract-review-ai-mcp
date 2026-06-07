@@ -1,0 +1,34 @@
+{
+  "name": "contract-review-ai-mcp",
+  "title": "Contract Review Ai Mcp",
+  "description": "MCP server for contract review ai. Features analyze contract, extract clauses, identify risks. From MEOK AI Labs.",
+  "version": "1.0.6",
+  "homepage": "https://meok.ai",
+  "license": "MIT",
+  "transport": {
+    "type": "stdio"
+  },
+  "tools": [
+    {
+      "name": "analyze_contract"
+    },
+    {
+      "name": "extract_clauses"
+    },
+    {
+      "name": "identify_risks"
+    },
+    {
+      "name": "compare_contracts"
+    },
+    {
+      "name": "summarize_contract"
+    },
+    {
+      "name": "check_favourable_terms"
+    },
+    {
+      "name": "get_review_history"
+    }
+  ]
+}

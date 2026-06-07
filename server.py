@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """
-Buy Pro: https://www.csoai.org/checkout
 MEOK AI Labs — contract-review-ai-mcp MCP Server. Contract analysis, clause extraction, and risk assessment."""
 
 import json

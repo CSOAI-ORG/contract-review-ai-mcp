@@ -1,0 +1,9 @@
+# contract-review-ai-mcp - Auto-trigger Rules
+
+When the user asks about contract review, use contract-review-ai-mcp tools: analyze_contract, extract_clauses, identify_risks, compare_contracts, summarize_contract
+
+**MCP server for contract review ai mcp operations**
+
+Install: `pip install contract-review-ai-mcp`
+
+By MEOK AI Labs — MIT licensed.
