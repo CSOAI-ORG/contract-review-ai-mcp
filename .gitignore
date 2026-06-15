@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .env
 *.db
+
+# Auto-added during alignment sweep
+dist/
