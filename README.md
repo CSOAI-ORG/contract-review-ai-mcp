@@ -113,3 +113,28 @@ Free tier: 10 calls/day per MCP. Pro tier (£79/mo): unlimited + cryptographical
 
 <!-- BUY-LADDER:END -->
 
+
+
+## Configuration
+
+Add to your `claude_desktop_config.json` (Claude Desktop) or your MCP client config:
+
+```json
+{
+  "mcpServers": {
+    "contract-review-ai-mcp": {
+      "command": "uvx",
+      "args": ["contract-review-ai-mcp"]
+    }
+  }
+}
+```
+
+Or: `pip install contract-review-ai-mcp` then run the `contract-review-ai-mcp` command (stdio transport).
+
+## Examples
+
+Once configured, ask your assistant, for example:
+- "Use `analyze_contract` to …"
+- "Use `extract_clauses` to …"
+- "Use `identify_risks` to …"
